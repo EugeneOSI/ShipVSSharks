@@ -14,6 +14,7 @@ public class Ship : MonoBehaviour
     [SerializeField] private Transform[] suspensionPoints;
 
     public static Action ShipDied;
+    public static Action CoinCollected;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -74,6 +75,11 @@ public class Ship : MonoBehaviour
         {
             Debug.Log("Ship Died");
             ShipDied?.Invoke();
+        }
+        if (other.gameObject.CompareTag("Coin"))
+        {
+            CoinCollected?.Invoke();
+            Destroy(other.gameObject);
         }
     }
 }

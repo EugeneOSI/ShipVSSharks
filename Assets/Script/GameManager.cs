@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Space)&!isBoosting){
             isBoosting = true;
-            currentSpeed = maxSpeed;
+            currentSpeed = maxSpeed*powerSlider.value;
         }
         if (isBoosting){
             Debug.Log(currentSpeed);

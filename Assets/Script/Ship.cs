@@ -1,6 +1,8 @@
+using System;
 using UnityEngine;
 public class Ship : MonoBehaviour
 {
+    [Header("Физика корабля")]
     [SerializeField] private Rigidbody2D _RB;
     [SerializeField] private float rayLength = 10f;
     [SerializeField] private float rideSpringStrength = 100f;
@@ -8,9 +10,10 @@ public class Ship : MonoBehaviour
     [SerializeField] private float maxTiltAngle = 30f;
     [SerializeField] private float rideHeight;
     [SerializeField] private LayerMask layerMask;
-    [SerializeField] private float jumpForce = 5f;
-    bool rayDidHit = false;
+    [Header("Ship Suspension")]
     [SerializeField] private Transform[] suspensionPoints;
+
+    public static Action ShipDied;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -22,10 +25,7 @@ public class Ship : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _RB.AddForce(new Vector2(0, 1* jumpForce), ForceMode2D.Impulse);
-        }
+        
     }
     void FixedUpdate()
     {
@@ -66,5 +66,14 @@ public class Ship : MonoBehaviour
             _RB.angularVelocity = 0f;
            }
         
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Shark"))
+        {
+            Debug.Log("Ship Died");
+            ShipDied?.Invoke();
+        }
     }
 }

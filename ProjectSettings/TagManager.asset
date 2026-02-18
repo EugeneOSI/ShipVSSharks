@@ -6,11 +6,12 @@ TagManager:
   tags:
   - Shark
   - Coin
+  - Bonus
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - RaycastTrigger
   - Water
   - UI
   - 

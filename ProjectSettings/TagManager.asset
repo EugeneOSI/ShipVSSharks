@@ -7,6 +7,8 @@ TagManager:
   - Shark
   - Coin
   - Bonus
+  - Aim
+  - Water
   layers:
   - Default
   - TransparentFX

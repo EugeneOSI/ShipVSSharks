@@ -14,11 +14,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] float coinSpawnDelay = 1.3f;
     [SerializeField] float delayDifference = 1f;
     [SerializeField] float yDifference = 0.5f;
+    [SerializeField] float aimSpawnDelay = 1.5f;
 
     [Header("Префабы")]
     [SerializeField] GameObject waterWavePrefab;
     [SerializeField] GameObject sharkPrefab;
     [SerializeField] GameObject coinPrefab;
+    [SerializeField] GameObject aimPrefab;
     [Header("Настройки скорости")]
     public float defaultSpeed;
     [SerializeField] float maxSpeed;
@@ -87,11 +89,11 @@ public class GameManager : MonoBehaviour
             powerSlider.gameObject.SetActive(false);
         }
         
-        if (Input.GetKey(KeyCode.Space)&!isBoosting){
+        if (Input.GetKey(KeyCode.W)&!isBoosting){
             powerSlider.value = Mathf.MoveTowards(powerSlider.value, powerSlider.maxValue, Time.deltaTime*chargeSpeed);
         }
 
-        if (Input.GetKeyUp(KeyCode.Space)&&!isBoosting){
+        if (Input.GetKeyUp(KeyCode.W)&&!isBoosting){
             isBoosting = true;
             currentSpeed = maxSpeed*powerSlider.value;
         }
@@ -140,6 +142,8 @@ public class GameManager : MonoBehaviour
         Instantiate(sharkPrefab, new Vector3(xLimit, Random.Range(yPos - yDifference, yPos + yDifference), 0), Quaternion.Euler(0, 0,Random.Range(-30,-45)));
         yield return new WaitForSeconds(Random.Range(coinSpawnDelay - delayDifference, coinSpawnDelay + delayDifference));
         Instantiate(coinPrefab, new Vector3(xLimit, Random.Range(yPos+5f - yDifference, yPos + 5f + yDifference), 0), Quaternion.identity);
+        yield return new WaitForSeconds(Random.Range(aimSpawnDelay - delayDifference, aimSpawnDelay + delayDifference));
+        Instantiate(aimPrefab, new Vector3(xLimit, Random.Range(yPos+7f - yDifference, yPos + 7f + yDifference), 0), Quaternion.identity);
         isSpawning = false;
     }
 }

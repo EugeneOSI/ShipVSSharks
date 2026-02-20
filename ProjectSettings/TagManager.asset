@@ -7,6 +7,11 @@ TagManager:
   - Shark
   - Coin
   - Bonus
+  - Aim
+  - Water
+  - Tornado
+  - Ship
+  - CannonBall
   layers:
   - Default
   - TransparentFX

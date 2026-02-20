@@ -18,8 +18,6 @@ public class Ship : MonoBehaviour
     [SerializeField] private float flyAcceleration = 100f;
     [SerializeField] private float maxFlySpeed = 10f;
     [SerializeField] private float normalGravity;
-    [SerializeField] private float tornadoForce = 100f;
-    bool onTornado;
     bool isFlying;
     bool onWater;
 
@@ -93,7 +91,7 @@ public class Ship : MonoBehaviour
     void FixedUpdate()
     {
 
-        if (customSuspention&&!onTornado){
+        if (customSuspention){
         SuspentionHandler();}
         
         if (_shipControlType.currentControlType == ShipControl.withMovement)
@@ -103,9 +101,6 @@ public class Ship : MonoBehaviour
         if (_shipControlType.currentControlType == ShipControl.tinyWings)
         {
             SurfHandler();
-        }
-        if (onTornado){
-            OnTornado();
         }
         
         
@@ -122,16 +117,6 @@ public class Ship : MonoBehaviour
         {
             CoinCollected?.Invoke();
             Destroy(other.gameObject);
-        }
-        if (other.gameObject.CompareTag("Tornado"))
-        {
-            onTornado = true;
-        }
-        if (other.gameObject.CompareTag("Ship"))
-        {
-            Destroy(gameObject);
-            ShipDied?.Invoke();
-            
         }
     }
     void SuspentionHandler()
@@ -212,17 +197,6 @@ public class Ship : MonoBehaviour
         _RB.linearVelocity = Vector2.zero;
         transform.position = initialPosition;
         transform.rotation = initialRotation;
-    }
-    void OnTornado(){
-        _RB.AddForce(Vector2.up * tornadoForce, ForceMode2D.Force);
-    }
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("Tornado"))
-        {
-            onTornado = false;
-        }
-
     }
 
 }

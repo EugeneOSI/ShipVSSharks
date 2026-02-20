@@ -15,18 +15,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] float delayDifference = 1f;
     [SerializeField] float yDifference = 0.5f;
     [SerializeField] float aimSpawnDelay = 1.5f;
-    [SerializeField] float tornadoSpawnDelay = 10f;
-    [SerializeField] float coinsYOffset = 1f;
-    [SerializeField] float straightCoinsSpawnDelay = 1f;
 
     [Header("Префабы")]
-    [SerializeField] GameObject[] waterWavePrefabs;
+    [SerializeField] GameObject waterWavePrefab;
     [SerializeField] GameObject sharkPrefab;
     [SerializeField] GameObject coinPrefab;
     [SerializeField] GameObject aimPrefab;
-    [SerializeField] GameObject tornadoPrefab;
-    [SerializeField] GameObject straightCoinsPrefab;
-    [SerializeField] GameObject enemyShipPrefab;
     [Header("Настройки скорости")]
     public float defaultSpeed;
     [SerializeField] float maxSpeed;
@@ -41,7 +35,6 @@ public class GameManager : MonoBehaviour
     public bool isBoosting = false;
     bool isGameEnded = false;
     bool isSpawning = false;
-    bool tornadoIsSpawning = false;
     [Header("Progress")]
     int coinsCollected;
     [SerializeField] TextMeshProUGUI coinsText;
@@ -75,7 +68,6 @@ public class GameManager : MonoBehaviour
         currentSpeed = defaultSpeed;
         isBoosting = false;
         isSpawning = false;
-        tornadoIsSpawning = false;
         isGameEnded = false;
     }
 
@@ -88,9 +80,6 @@ public class GameManager : MonoBehaviour
         
         if(!isSpawning&&!isGameEnded) {
             StartCoroutine(SpawnObject(yDifference, delayDifference));
-            }
-        if(!tornadoIsSpawning&&!isGameEnded) {
-            StartCoroutine(SpawnTornado());
             }
 
         if (powerSlider.value > 0){
@@ -146,34 +135,15 @@ public class GameManager : MonoBehaviour
 
     IEnumerator SpawnObject(float yDifference, float delayDifference){
         isSpawning = true;
-        //Debug.Log("Spawning Water Wave");
-        float coinsSpawnChance = Random.Range(0f, 1f);
-        if (coinsSpawnChance < 0.5f){
-            Instantiate(straightCoinsPrefab, new Vector3(xLimit, 0f, 0), Quaternion.identity);
-        }
-        else{
-            Instantiate(enemyShipPrefab, new Vector3(xLimit, -.6f, 0), Quaternion.identity);
-        }
+        Debug.Log("Spawning Water Wave");
         yield return new WaitForSeconds(Random.Range(waveSpawnDelay - delayDifference, waveSpawnDelay + delayDifference));
-        Instantiate(waterWavePrefabs[Random.Range(0, waterWavePrefabs.Length)], new Vector3(xLimit, Random.Range(yPos - yDifference, yPos + yDifference), 0), Quaternion.Euler(0, 0,Random.Range(-30,-45)));
+        Instantiate(waterWavePrefab, new Vector3(xLimit, Random.Range(yPos - yDifference, yPos + yDifference), 0), Quaternion.Euler(0, 0,Random.Range(-30,-45)));
         yield return new WaitForSeconds(Random.Range(sharkSpawnDelay - delayDifference, sharkSpawnDelay + delayDifference));
         Instantiate(sharkPrefab, new Vector3(xLimit, Random.Range(yPos - yDifference, yPos + yDifference), 0), Quaternion.Euler(0, 0,Random.Range(-30,-45)));
         yield return new WaitForSeconds(Random.Range(coinSpawnDelay - delayDifference, coinSpawnDelay + delayDifference));
-        //Instantiate(coinPrefab, new Vector3(xLimit, Random.Range(yPos+5f - yDifference, yPos + 5f + yDifference), 0), Quaternion.identity);
+        Instantiate(coinPrefab, new Vector3(xLimit, Random.Range(yPos+5f - yDifference, yPos + 5f + yDifference), 0), Quaternion.identity);
         yield return new WaitForSeconds(Random.Range(aimSpawnDelay - delayDifference, aimSpawnDelay + delayDifference));
         Instantiate(aimPrefab, new Vector3(xLimit, Random.Range(yPos+7f - yDifference, yPos + 7f + yDifference), 0), Quaternion.identity);
         isSpawning = false;
-    }
-    IEnumerator SpawnTornado(){
-        tornadoIsSpawning = true;
-        yield return new WaitForSeconds(Random.Range(tornadoSpawnDelay - delayDifference, tornadoSpawnDelay + delayDifference));
-        float tornadoSpawnChance = Random.Range(0f, 1f);
-        if (tornadoSpawnChance < 0.5f){
-            Instantiate(tornadoPrefab, new Vector3(xLimit, Random.Range(yPos+5f - yDifference, yPos + 5f + yDifference), 0), Quaternion.identity);
-            yield return new WaitForSeconds(Random.Range(coinSpawnDelay - delayDifference, coinSpawnDelay + delayDifference));
-            Instantiate(coinPrefab, new Vector3(xLimit, Random.Range(yPos+coinsYOffset - yDifference, yPos + coinsYOffset + yDifference), 0), Quaternion.identity);
-        }
-        
-        tornadoIsSpawning = false;
     }
 }

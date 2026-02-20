@@ -1258,28 +1258,18 @@ MonoBehaviour:
   yPos: -4
   xLimit: 22
   waveSpawnDelay: 3.5
-  sharkSpawnDelay: 1.1
-  coinSpawnDelay: 1
+  sharkSpawnDelay: 1.3
+  coinSpawnDelay: 0.8
   delayDifference: 0.3
   yDifference: 0.3
   aimSpawnDelay: 1.2
-  tornadoSpawnDelay: 8
-  coinsYOffset: 6
-  straightCoinsSpawnDelay: 0.8
-  waterWavePrefabs:
-  - {fileID: 5565155896703787022, guid: 5f7691731f709944e9e776819dc7eff6, type: 3}
-  - {fileID: 284689798669582013, guid: 8ccc5b89f513a724c8327c94a0c1e780, type: 3}
-  - {fileID: 7837123500749580583, guid: f2865a75798da704695830f10512ecc0, type: 3}
-  - {fileID: 284689798669582013, guid: 6bada761ab892104e87516e64496beda, type: 3}
+  waterWavePrefab: {fileID: 5565155896703787022, guid: 5f7691731f709944e9e776819dc7eff6, type: 3}
   sharkPrefab: {fileID: 8733886472928446154, guid: baf242dc193d306428fa6daa9d7d5194, type: 3}
-  coinPrefab: {fileID: 4920176446326079061, guid: 1e46deae92251f14d88894d6136b61da, type: 3}
+  coinPrefab: {fileID: 6768374722494190750, guid: c4212bc051cfd5e499040a9b017702e4, type: 3}
   aimPrefab: {fileID: 6173218043938773905, guid: 7ead8122e101c8043a0dfd569b58a2e7, type: 3}
-  tornadoPrefab: {fileID: 2153141168794810595, guid: bc459b26c26401d4f8b7b166b12bbccb, type: 3}
-  straightCoinsPrefab: {fileID: 8417215587025606305, guid: ea503c7e4aead594ba951b9158e55116, type: 3}
-  enemyShipPrefab: {fileID: 2925870315630722970, guid: 88f92443220321044965631bac092e7c, type: 3}
   defaultSpeed: 5
   maxSpeed: 18
-  chargeSpeed: 1.5
+  chargeSpeed: 1
   boostTime: 0.5
   powerSlider: {fileID: 2061116536}
   isBoosting: 0
@@ -2436,14 +2426,6 @@ PrefabInstance:
     - target: {fileID: 5921939540693134564, guid: 7718fc0a4e5df984e85c0685617963f1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6706888520909755307, guid: 7718fc0a4e5df984e85c0685617963f1, type: 3}
-      propertyPath: tornadoForce
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 6706888520909755307, guid: 7718fc0a4e5df984e85c0685617963f1, type: 3}
-      propertyPath: _cannonRecoil
-      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 6706888520909755307, guid: 7718fc0a4e5df984e85c0685617963f1, type: 3}
       propertyPath: normalGravity

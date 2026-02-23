@@ -6067,12 +6067,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3bcda007af6e1c44a8cbbfcfe0543ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ship
+  tornadoForce: 100
+  _cannonRecoil: 1000
   _shipControlType: {fileID: 7423917384899732856}
   _playerInput: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  spawnManager: {fileID: 0}
   _RB: {fileID: 8862929623397686719}
-  moveSpeed: 20
-  moveAcceleration: 100
-  maxSpeed: 20
   rayLength: 1.5
   rideSpringStrength: 1000
   rideSpringDamper: 30
@@ -6081,10 +6081,10 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 16
+  customSuspention: 0
   suspensionPoints:
   - {fileID: 6194358259909618906}
   - {fileID: 2527001530392511364}
-  _cannonRecoil: 1000
   _cannonPosition: {fileID: 2348816009931032153}
   _cannonParticles: {fileID: 8866609367400415297}
   cannonBall: {fileID: 8082716718652409423, guid: 780b4150492226e45bb4835c68db2ef6, type: 3}

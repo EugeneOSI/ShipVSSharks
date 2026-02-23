@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7987329731800870729}
   m_Layer: 0
   m_Name: CannonBall
-  m_TagString: Untagged
+  m_TagString: CannonBall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f501e1e0341ad94f923e6b65f1da69e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CannonBall
-  _acceleration: 100
+  _acceleration: 20
   _destroyTime: 3
 --- !u!50 &3244528429555188842
 Rigidbody2D:

@@ -5,23 +5,10 @@ using UnityEngine.SceneManagement;
 using TMPro;
 public class GameManager : MonoBehaviour
 {
-    
-    [Header("Настройки спавна")]
-    [SerializeField] float yPos = 0f;
-    public float xLimit = 22f;
-    [SerializeField] float waveSpawnDelay = 3f;
-    [SerializeField] float sharkSpawnDelay = 6f;
-    [SerializeField] float coinSpawnDelay = 1.3f;
-    [SerializeField] float delayDifference = 1f;
-    [SerializeField] float yDifference = 0.5f;
-    [SerializeField] float aimSpawnDelay = 1.5f;
-
-    [Header("Префабы")]
-    [SerializeField] GameObject waterWavePrefab;
-    [SerializeField] GameObject sharkPrefab;
-    [SerializeField] GameObject coinPrefab;
-    [SerializeField] GameObject aimPrefab;
-    [Header("Настройки скорости")]
+    [Header("Настройки игры (Можно менять)")]
+    [SerializeField] int defaultCoinsLoss;
+    [SerializeField] float gameSpeedChange;
+    [Header("Настройки скорости (Можно менять)")]
     public float defaultSpeed;
     [SerializeField] float maxSpeed;
     [SerializeField] float chargeSpeed;
@@ -31,16 +18,15 @@ public class GameManager : MonoBehaviour
     float powerVelocity;
     public float currentSpeed {get; private set;}
 
-    [Header("Состояния")]
+    [Header("Состояния (Не трогать)")]
     public bool isBoosting = false;
     bool isGameEnded = false;
-    bool isSpawning = false;
-    [Header("Progress")]
+    [Header("Progress (Не трогать)")]
     int coinsCollected;
     [SerializeField] TextMeshProUGUI coinsText;
-    [SerializeField] Slider progressSlider;
-    [SerializeField] float gameDuration;
-    float gameTimer;
+    //[SerializeField] Slider progressSlider;
+    //[SerializeField] float gameDuration;
+    //float gameTimer;
     [SerializeField] GameObject gameEndScreen;
     [SerializeField] TextMeshProUGUI finalCoinsText;
     [SerializeField] TextMeshProUGUI resultText;
@@ -48,40 +34,40 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        Ship.ShipDied += OnShipDied;
+        Ship.ShipDamaged += OnShipDamaged;
         Ship.CoinCollected += OnCoinCollected;
+        ShipTop.ShipTopDamaged += OnShipDamaged;
     }
     void OnDestroy()
     {
-        Ship.ShipDied -= OnShipDied;
+        Ship.ShipDamaged -= OnShipDamaged;
         Ship.CoinCollected -= OnCoinCollected;
+        ShipTop.ShipTopDamaged -= OnShipDamaged;
     }
     void Start()
     {
+        Time.timeScale = 1;
         powerSlider.value = 0;
         coinsCollected = 0;
-        gameTimer = gameDuration;
-        progressSlider.value = 0;
+        //gameTimer = gameDuration;
+        //progressSlider.value = 0;
         coinsText.text = coinsCollected.ToString();
         powerSlider.gameObject.SetActive(false);
         gameEndScreen.SetActive(false);
         currentSpeed = defaultSpeed;
         isBoosting = false;
-        isSpawning = false;
         isGameEnded = false;
     }
 
     void Update()
     {
         //Debug.Log(currentSpeed);
-        gameTimer -= Time.deltaTime;
+        /*gameTimer -= Time.deltaTime;
         if (gameTimer <= 0){isGameEnded = true;}
-        progressSlider.value = 1 - (gameTimer/gameDuration);
-        
-        if(!isSpawning&&!isGameEnded) {
-            StartCoroutine(SpawnObject(yDifference, delayDifference));
-            }
+        progressSlider.value = 1 - (gameTimer/gameDuration);*/
 
+
+        IncreaseGameSpeed();
         if (powerSlider.value > 0){
             powerSlider.gameObject.SetActive(true);
         }
@@ -108,7 +94,7 @@ public class GameManager : MonoBehaviour
             isBoosting = false;
             }
         }
-        if (isGameEnded&&!isSpawning){
+        if (isGameEnded){
             gameEndScreen.SetActive(true);
             finalCoinsText.text = coinsCollected.ToString();
             if (coinsCollected > 10){
@@ -123,27 +109,39 @@ public class GameManager : MonoBehaviour
         
     }
 
+    void OnShipDamaged(){
+        coinsCollected -= defaultCoinsLoss;
+        coinsText.text = coinsCollected.ToString();
+        if (coinsCollected <= 0) OnShipDied();
+    }
     void OnShipDied()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            Time.timeScale = 0;
+            gameEndScreen.SetActive(true);
+            finalCoinsText.text = coinsCollected.ToString();
+            if (coinsCollected > 10){
+            resultText.text = "Ебать красавчик";
+            resultText.color = Color.green;
+            }
+            else{
+            resultText.text = "Ты лох";
+            resultText.color = Color.red;
+            }
     }
     void OnCoinCollected()
     {
         coinsCollected++;
         coinsText.text = coinsCollected.ToString();
     }
+    void IncreaseGameSpeed()
+    {
+        float delta = gameSpeedChange * Time.deltaTime;
+        defaultSpeed += delta;
+        maxSpeed += delta;
+    }
 
-    IEnumerator SpawnObject(float yDifference, float delayDifference){
-        isSpawning = true;
-        Debug.Log("Spawning Water Wave");
-        yield return new WaitForSeconds(Random.Range(waveSpawnDelay - delayDifference, waveSpawnDelay + delayDifference));
-        Instantiate(waterWavePrefab, new Vector3(xLimit, Random.Range(yPos - yDifference, yPos + yDifference), 0), Quaternion.Euler(0, 0,Random.Range(-30,-45)));
-        yield return new WaitForSeconds(Random.Range(sharkSpawnDelay - delayDifference, sharkSpawnDelay + delayDifference));
-        Instantiate(sharkPrefab, new Vector3(xLimit, Random.Range(yPos - yDifference, yPos + yDifference), 0), Quaternion.Euler(0, 0,Random.Range(-30,-45)));
-        yield return new WaitForSeconds(Random.Range(coinSpawnDelay - delayDifference, coinSpawnDelay + delayDifference));
-        Instantiate(coinPrefab, new Vector3(xLimit, Random.Range(yPos+5f - yDifference, yPos + 5f + yDifference), 0), Quaternion.identity);
-        yield return new WaitForSeconds(Random.Range(aimSpawnDelay - delayDifference, aimSpawnDelay + delayDifference));
-        Instantiate(aimPrefab, new Vector3(xLimit, Random.Range(yPos+7f - yDifference, yPos + 7f + yDifference), 0), Quaternion.identity);
-        isSpawning = false;
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

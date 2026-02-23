@@ -3,25 +3,22 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class Ship : MonoBehaviour
 {
+    [Header("Сила торнадо и отдача пушки (можно менять)")]
+    [SerializeField] private float tornadoForce = 100f;
+    public float _cannonRecoil;
+
     [Header("Components")]
     [SerializeField] private ShipControlType _shipControlType;
     [SerializeField] private InputActionAsset _playerInput;
     private InputActionMap _playerActions;
+    [SerializeField] private SpawnManager spawnManager;
     [SerializeField] private Rigidbody2D _RB;
-    [Header("Скорость корабля")]
-    [SerializeField] private float moveSpeed = 10f;
-    [SerializeField] private float moveAcceleration = 100f;
-    [SerializeField] private float maxSpeed = 10f;
-    [Header("Поведение корабля в полете")]
-    [SerializeField] private float downForce = 50f;
-    [SerializeField] private float extraGravity = 100f;
-    [SerializeField] private float flyAcceleration = 100f;
-    [SerializeField] private float maxFlySpeed = 10f;
-    [SerializeField] private float normalGravity;
-    bool isFlying;
+    
+    [Header("Состояния")]   
     bool onWater;
+    bool onTornado;
 
-    [Header("Поведение корабля на воде")]
+    [Header("Физика коробля на воде (не трогать)")]
     [SerializeField] private float rayLength = 10f;
     [SerializeField] private float rideSpringStrength = 100f;
     [SerializeField] private float rideSpringDamper = 10f;
@@ -29,20 +26,18 @@ public class Ship : MonoBehaviour
     [SerializeField] private float rideHeight;
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private bool customSuspention = false;
-    [Header("Ship Suspension")]
+    [Header("Ship Suspension (не трогать)")]
     [SerializeField] private Transform[] suspensionPoints;
-    [Header("Ship Cannon")]
-    public float _cannonRecoil;
+    [Header("Пушка корабля (не трогать)")]
     [SerializeField] Transform _cannonPosition;
     [SerializeField] ParticleSystem _cannonParticles;
     [SerializeField] GameObject cannonBall;
 
-    public static Action ShipDied;
+    public static Action ShipDamaged;
     public static Action CoinCollected;
 
     Vector3 initialPosition;
     Quaternion initialRotation;
-
     void OnEnable(){
         _playerActions.Enable();
     }
@@ -51,12 +46,16 @@ public class Ship : MonoBehaviour
     }
     
     void Awake(){
+        
+        ShipTop.ShipTopDamaged += OnShipTopDamaged;
         _playerInput.Enable();
         _playerActions = _playerInput.FindActionMap("Player");
         _cannonParticles.Stop();
         initialPosition = transform.position;
         initialRotation = transform.rotation;
-        _RB.gravityScale = normalGravity;
+    }
+    void OnDestroy(){
+        ShipTop.ShipTopDamaged -= OnShipTopDamaged;
     }
 
 
@@ -67,56 +66,48 @@ public class Ship : MonoBehaviour
         if (isShooting)
         {
             Shoot();
-            isShooting = false;
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
             ResetPosition();
         }
-        if (_shipControlType.currentControlType == ShipControl.tinyWings)
-        {
-            SurfInputHandler();
-        }
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, -transform.up, rayLength, layerMask);
-        if (hit.collider != null){
-            onWater = true;
-            //print("On Water");
-        }
-        else{
-            onWater = false;
-            //print("Not On Water");
-        }
         Debug.DrawRay(transform.position, -transform.up * rayLength, Color.red);
     }
     void FixedUpdate()
     {
-
-        if (customSuspention){
-        SuspentionHandler();}
         
-        if (_shipControlType.currentControlType == ShipControl.withMovement)
-        {
-            UpdateMovement();
+        SuspentionHandler();
+        if (onTornado){
+            _RB.AddForce(Vector2.up * tornadoForce * Time.fixedDeltaTime, ForceMode2D.Force);
         }
-        if (_shipControlType.currentControlType == ShipControl.tinyWings)
-        {
-            SurfHandler();
-        }
-        
         
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Shark"))
+        if (other.gameObject.CompareTag("Shark")|other.gameObject.CompareTag("Ship"))
         {
-            Debug.Log("Ship Died");
-            ShipDied?.Invoke();
+            ShipDamaged?.Invoke();
+            Destroy(other.gameObject);
         }
         if (other.gameObject.CompareTag("Coin"))
         {
             CoinCollected?.Invoke();
             Destroy(other.gameObject);
+        }
+        if (other.gameObject.CompareTag("Finish")){
+            spawnManager.SpawnPattern();
+        }
+        if (other.gameObject.CompareTag("Tornado")){
+            print("On Tornado");
+            onTornado = true;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Tornado")){
+            onTornado = false;
         }
     }
     void SuspentionHandler()
@@ -147,45 +138,6 @@ public class Ship : MonoBehaviour
         
     }
 
-    private void SurfInputHandler(){
-        if (_playerActions.FindAction("Attack").WasPressedThisFrame()){
-            isFlying = true;
-        }
-        if (_playerActions.FindAction("Attack").WasReleasedThisFrame()){
-            isFlying = false;
-        }
-    }
-    private void SurfHandler(){
-        if (isFlying&&!onWater){
-            _RB.gravityScale = extraGravity;
-
-            if (!onWater){
-            _RB.AddForce(Vector2.down  * downForce * Time.fixedDeltaTime, ForceMode2D.Force);}
-            print("Flying");
-        }
-        if (isFlying&&onWater){
-            _RB.gravityScale = normalGravity;
-            _RB.AddForce(Vector2.right * flyAcceleration * Time.fixedDeltaTime, ForceMode2D.Force);
-            print("Surfing");
-        }
-        else{
-            _RB.gravityScale = normalGravity;
-            print("Not Flying");
-        }
-        _RB.linearVelocity = _RB.linearVelocity.magnitude > maxFlySpeed ? _RB.linearVelocity.normalized * maxFlySpeed : _RB.linearVelocity;
-        
-
-    }
-    
-    private void UpdateMovement(){
-        Vector2 moveInput = _playerActions.FindAction("Move").ReadValue<Vector2>();
-        
-        Vector2 direction = new Vector2(moveInput.x, 0f);
-        _RB.AddForce(direction * moveSpeed * moveAcceleration * Time.fixedDeltaTime, ForceMode2D.Force);
-
-        _RB.linearVelocity = _RB.linearVelocity.magnitude > maxSpeed ? _RB.linearVelocity.normalized * maxSpeed : _RB.linearVelocity;
-    }
-
     void Shoot(){
         Instantiate(cannonBall, _cannonPosition.position, _cannonPosition.rotation);
         _cannonParticles.Play();
@@ -197,6 +149,10 @@ public class Ship : MonoBehaviour
         _RB.linearVelocity = Vector2.zero;
         transform.position = initialPosition;
         transform.rotation = initialRotation;
+    }
+
+    void OnShipTopDamaged(){
+        ResetPosition();
     }
 
 }

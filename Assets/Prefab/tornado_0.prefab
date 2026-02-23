@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4087901599642486838}
   - component: {fileID: 3888172983000938823}
   - component: {fileID: 2663537068531860682}
-  - component: {fileID: 2772868125056156841}
   m_Layer: 0
   m_Name: tornado_0
   m_TagString: Tornado
@@ -139,16 +138,3 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.566493, y: 6.2328663}
   m_EdgeRadius: 0
---- !u!114 &2772868125056156841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2153141168794810595}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b35b353ec4eeea24ca407b3e0d52b5b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Tornado
-  speed: 1.1

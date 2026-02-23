@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5478742661161444567}
   - component: {fileID: 7556928370645781143}
   - component: {fileID: 1897682654392240912}
-  - component: {fileID: -3276522806744699669}
   m_Layer: 0
   m_Name: Shark_0
   m_TagString: Shark
@@ -236,15 +235,3 @@ PolygonCollider2D:
       - {x: 19.44336, y: -13.535156}
       - {x: 19.44336, y: -12.207031}
   m_UseDelaunayMesh: 1
---- !u!114 &-3276522806744699669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8733886472928446154}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4194e51b411eb8d48a609cb4bf3bd87c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WaterWave

@@ -14,9 +14,9 @@ public class EnemyShip : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        speed = gameManager.currentSpeed;
-        transform.position += new Vector3(-1*speed * Time.deltaTime, 0, 0);
-        if (transform.position.x < -gameManager.xLimit||health <= 0)
+        /*speed = gameManager.currentSpeed;
+        transform.position += new Vector3(-1*speed * Time.deltaTime, 0, 0);*/
+        if (health <= 0)
         {
             Destroy(gameObject);
         }

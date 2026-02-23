@@ -11,11 +11,6 @@ public class Tornado : MonoBehaviour
     }
     void Update()
     {
-        float currentSpeed = speed+gameManager.currentSpeed;
-        transform.position += new Vector3(-1*currentSpeed * Time.deltaTime, 0, 0);
-        if (transform.position.x < -gameManager.xLimit)
-        {
-            Destroy(gameObject);
-        }
+
     }
 }

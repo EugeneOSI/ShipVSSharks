@@ -49,12 +49,16 @@
     <Analyzer Include="F:\Programs\Unity\6000.3.7f1\Editor\Data\Tools\BuildPipeline\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Script\ShipTop.cs" />
+    <Compile Include="Assets\Script\EnemyShip.cs" />
+    <Compile Include="Assets\Script\Tornado.cs" />
     <Compile Include="Assets\Script\CannonBall.cs" />
-    <Compile Include="Assets\Script\WaterWave.cs" />
+    <Compile Include="Assets\Script\SpawnManager.cs" />
     <Compile Include="Assets\Script\Ship.cs" />
     <Compile Include="Assets\Script\GameManager.cs" />
     <Compile Include="Assets\Script\OceanGenerator.cs" />
     <Compile Include="Assets\Script\ShipControlType.cs" />
+    <Compile Include="Assets\Script\MoveLeft.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

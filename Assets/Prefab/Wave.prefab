@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 472626915129103810}
   - component: {fileID: 5556320926368329356}
   - component: {fileID: 6659930029678324825}
-  - component: {fileID: 5943713953416605716}
   m_Layer: 4
   m_Name: Wave
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -143,15 +142,3 @@ PolygonCollider2D:
       - {x: -0.5, y: -0.28866667}
       - {x: 0.5, y: -0.28866667}
   m_UseDelaunayMesh: 1
---- !u!114 &5943713953416605716
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5565155896703787022}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4194e51b411eb8d48a609cb4bf3bd87c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WaterWave

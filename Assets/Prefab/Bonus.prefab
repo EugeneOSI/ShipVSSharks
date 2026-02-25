@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7815083833932745119}
   - component: {fileID: 7994215353183128294}
   - component: {fileID: 8845152982285032560}
-  - component: {fileID: -7562560154800276619}
   m_Layer: 0
   m_Name: Bonus
   m_TagString: Coin
@@ -129,15 +128,3 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.49999997
---- !u!114 &-7562560154800276619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6768374722494190750}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4194e51b411eb8d48a609cb4bf3bd87c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WaterWave

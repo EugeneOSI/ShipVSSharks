@@ -1,12 +1,14 @@
 using UnityEngine;
 
-public class WaterWave : MonoBehaviour
+public class MoveLeft : MonoBehaviour
 {
     private float speed;
     private GameManager gameManager;
+    private SpawnManager spawnManager;
     void Start()
     {
-        gameManager = GameObject.FindFirstObjectByType<GameManager>();
+        gameManager = FindFirstObjectByType<GameManager>();
+        spawnManager = FindFirstObjectByType<SpawnManager>();
     }
 
     // Update is called once per frame
@@ -14,7 +16,7 @@ public class WaterWave : MonoBehaviour
     {
         speed = gameManager.currentSpeed;
         transform.position += new Vector3(-1*speed * Time.deltaTime, 0, 0);
-        if (transform.position.x < -gameManager.xLimit)
+        if (transform.position.x < -spawnManager.xLimit)
         {
             Destroy(gameObject);
         }
